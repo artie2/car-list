@@ -2,13 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { getCar, type Car, deleteCar } from '$lib/localstorage';
-	import { onMount } from 'svelte';
     
   const carId = $page.params.carId;
   let car: Car;
-  onMount(()=>{
-     car = getCar(carId);
-  })
+  $: {
+        const carId = $page.params.carId;
+        car = getCar(carId);
+    }
 	function onDeleteCar() {
 		deleteCar(carId);
         goto('/cars');

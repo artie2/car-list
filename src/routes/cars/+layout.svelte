@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { carStore } from "$lib/car.store";
-	import { addCar, getCars, type Car } from "$lib/localstorage";
-	import { onMount } from "svelte";
-
-     let cars: Car[] = [];
+	import { addCar, type Car } from "$lib/localstorage";
+  import { page } from '$app/stores';
 
     //не нравится чет длина и как из формы винимаем данные
 	function onSubmitCar(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement; }) {
@@ -22,9 +20,9 @@
     }
     }
 
-    onMount(()=>{
-		 cars = getCars();
-    })
+    function onCarClick(car: Car) {
+      goto(`/cars/${car.id}`);
+    }
 </script>
 <main>
     <section class="formWrapper" >
@@ -47,7 +45,7 @@
       <section class="ListWrapper"  >
 <ul>
   {#each $carStore as car}
-    <li><span>{car.name} {car.model} {car.year}</span></li>
+    <li class:active={$page.params.carId === car.id}><span role="button" tabindex="0" on:keydown={() =>{onCarClick(car)}} on:click={() =>{onCarClick(car)}}><span>{car.name} {car.model} {car.year}</span></li>
 {/each}
 </ul>
       </section>
@@ -55,3 +53,9 @@
     <slot/>
       </section>
 </main>
+
+<style>
+  .active {
+    color: red;
+  }
+</style>
