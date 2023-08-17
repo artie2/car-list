@@ -1,3 +1,5 @@
+import { carStore } from "./car.store";
+
 export interface Car {
     id: string
     name: string
@@ -6,6 +8,7 @@ export interface Car {
 }
 
 export function getCars(): Car[] {
+    if (typeof window === 'undefined') return []
     const aData = localStorage.getItem('cars');
     if (!aData) return [];
     return JSON.parse(aData);
@@ -33,19 +36,19 @@ export function addCar(name: string, model: string, year: number): string {
     }
     data.push(car);
     localStorage.setItem('cars', JSON.stringify(data))
+    carStore.set(data);
     return id;
 }
 
 
-export function deleteCar(carId: string): Car[] {
+export function deleteCar(carId: string): void {
     const data = getCars();
     const carIndex = data.findIndex(car => car.id === carId);
 
     if (carIndex === -1) {
         throw new Error('Car not found');
     }
-
     data.splice(carIndex, 1);
     localStorage.setItem('cars', JSON.stringify(data));
-    return data
+    carStore.set(data);
 }

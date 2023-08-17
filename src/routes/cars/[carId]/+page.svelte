@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { getCar, type Car, deleteCar } from '$lib/localstorage.store';
+	import { getCar, type Car, deleteCar } from '$lib/localstorage';
 	import { onMount } from 'svelte';
     
   const carId = $page.params.carId;
@@ -11,7 +11,7 @@
   })
 	function onDeleteCar() {
 		deleteCar(carId);
-        goto('/cars')
+        goto('/cars');
 	}
 </script>
 

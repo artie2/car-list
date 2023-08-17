@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { addCar, getCars, type Car } from "$lib/localstorage.store";
+	import { carStore } from "$lib/car.store";
+	import { addCar, getCars, type Car } from "$lib/localstorage";
 	import { onMount } from "svelte";
 
      let cars: Car[] = [];
@@ -45,7 +46,7 @@
       </section>
       <section class="ListWrapper"  >
 <ul>
-    {#each cars as car}
+  {#each $carStore as car}
     <li><span>{car.name} {car.model} {car.year}</span></li>
 {/each}
 </ul>
