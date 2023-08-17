@@ -3,20 +3,23 @@
 	import { carStore } from "$lib/car.store";
 	import { addCar, type Car } from "$lib/localstorage";
   import { page } from '$app/stores';
+	import { compressImage } from "$lib/utils";
 
     //не нравится чет длина и как из формы винимаем данные
-	function onSubmitCar(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement; }) {
+	async function onSubmitCar(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement; }) {
         const form = event.target as HTMLFormElement
     const data = new FormData(form);
     const name = String(data.get('name'));
     const model = String(data.get('model'));
     const year = Number(data.get('year'));
+    const carImageFile = data.get('carImage') as File;
+    const carImage = await compressImage(carImageFile);
     try {
-        const id  = addCar(name, model, year);
+        const id  = addCar(name, model, year, carImage);
         form.reset();
         goto(`/cars/${id}`);
     } catch (error) {
-       alert('Error')
+       alert(error)
     }
     }
 
@@ -39,6 +42,10 @@
               Year
               <input required name="year" type="number">
             </label>
+            <label>
+              Car Image
+              <input type="file" accept="image/*" name="carImage" />
+          </label>
             <button type="submit">Save</button>
           </form>
       </section>

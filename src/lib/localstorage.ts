@@ -5,6 +5,7 @@ export interface Car {
     name: string
     model: string
     year: number
+    image?: string
 }
 
 export function getCars(): Car[] {
@@ -23,7 +24,7 @@ export function getCar(carId: string): Car {
     return found;
 }
 
-export function addCar(name: string, model: string, year: number): string {
+export function addCar(name: string, model: string, year: number, image?:string): string {
     const data = getCars();
     const id = `${name}-${model}-${year}`;
     const existingCar = data.find(car => car.id === id);
@@ -32,7 +33,7 @@ export function addCar(name: string, model: string, year: number): string {
         throw new Error('A car is already in the list');
     }
     const car = {
-        id, name, model, year
+        id, name, model, year, image
     }
     data.push(car);
     localStorage.setItem('cars', JSON.stringify(data))

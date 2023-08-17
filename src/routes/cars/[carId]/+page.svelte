@@ -20,5 +20,8 @@
 
 {#if car}
 <p> car : {car.name}</p>
+{#if car.image}
+<img alt={car.id} src={car.image} />
+{/if}
 <button on:click={onDeleteCar}>Delete</button>
 {/if}
