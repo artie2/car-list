@@ -16,6 +16,7 @@ export function getCars(): Car[] {
 }
 
 export function getCar(carId: string): Car {
+    if (typeof window === 'undefined') return {} as Car;
     var data = localStorage.getItem('cars')
     if (!data) throw new Error('no Cars was found');
     const parsedData = JSON.parse(data);
@@ -24,7 +25,7 @@ export function getCar(carId: string): Car {
     return found;
 }
 
-export function addCar(name: string, model: string, year: number, image?:string): string {
+export function addCar(name: string, model: string, year: number, image:string): string {
     const data = getCars();
     const id = `${name}-${model}-${year}`;
     const existingCar = data.find(car => car.id === id);
@@ -47,7 +48,7 @@ export function deleteCar(carId: string): void {
     const carIndex = data.findIndex(car => car.id === carId);
 
     if (carIndex === -1) {
-        throw new Error('Car not found');
+        throw new Error('Car was not found');
     }
     data.splice(carIndex, 1);
     localStorage.setItem('cars', JSON.stringify(data));
