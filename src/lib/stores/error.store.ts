@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store';
 
 //manage error messages in the application globally
-
 function createErrorStore() {
 
     const privateErrorStore = writable<string | null>(null);

@@ -13,7 +13,7 @@
 
 	function onDeleteCar(id: string) {
 		const deleted = deleteCar(id);
-		//if delete selected car we nee to navigate to home
+		//if delete selected car we need to navigate to home
 		if (deleted && selectedCarId === id) goto(`/`);
 	}
 </script>

@@ -1,9 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { carStore } from '$lib/stores/car.store';
-	import { deleteCar, type Car } from '$lib/localstorage';
-	import { page } from '$app/stores';
-	import { fade } from 'svelte/transition';
 	import { errorStore } from '$lib/stores/error.store';
 	import Form from '$lib/components/form.svelte';
 	import CarList from '$lib/components/car-list.svelte';
