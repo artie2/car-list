@@ -1,10 +1,11 @@
+import { getCars, type Car } from '$lib/localstorage';
 import { writable } from 'svelte/store';
-import { getCars, type Car } from '../localstorage';
-
-const initialCars = getCars();
 
 const createCarStore = () => {
-    const privateCarStore = writable<Car[]>(initialCars);
+    const privateCarStore = writable<Car[]>([], () => {
+        const initialCars = getCars();
+        privateCarStore.set(initialCars);
+    });
 
     return {
         subscribe: privateCarStore.subscribe,
