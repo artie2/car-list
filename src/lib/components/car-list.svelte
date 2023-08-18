@@ -41,38 +41,34 @@
 </ul>
 
 <style lang="scss">
-	.ListWrapper {
-		flex: 2;
+	.carList {
+		padding: 0;
 
-		.carList {
-			padding: 0;
+		li {
+			display: flex;
+			cursor: pointer;
+			margin-bottom: 10px;
+			display: flex;
+			justify-content: space-between;
+			border-bottom: 1px solid $input-border;
 
-			li {
-				display: flex;
-				cursor: pointer;
-				margin-bottom: 10px;
-				display: flex;
-				justify-content: space-between;
-				border-bottom: 1px solid $input-border;
-
-				&.active,
-				&:hover {
-					transition: all 1s ease;
-					border-bottom: 1px solid $input-border-focus;
+			&.active,
+			&:hover {
+				transition: all 1s ease;
+				border-bottom: 1px solid $input-border-focus;
+			}
+			.deleteButton {
+				border: none;
+				background: none;
+				outline: none;
+				&:hover,
+				:focus {
+					color: $button-delete-color;
 				}
-				.deleteButton {
-					border: none;
-					background: none;
-					outline: none;
-					&:hover,
-					:focus {
-						color: $button-delete-color;
-					}
-				}
-				span {
-					flex: 1;
-					padding: 5px 10px;
-				}
+			}
+			span {
+				flex: 1;
+				padding: 5px 10px;
 			}
 		}
 	}

@@ -2,23 +2,28 @@
 	import { errorStore } from '$lib/stores/error.store';
 	import Form from '$lib/components/form.svelte';
 	import CarList from '$lib/components/car-list.svelte';
+	import { page } from '$app/stores';
 </script>
 
-<main>
-	<section class="formWrapper">
-		<h4>Add Car to the list</h4>
-		{#if $errorStore}<span class="errorMessage">{$errorStore}</span>{/if}
-		<Form />
-	</section>
-	<div class="contentWrapper">
-		<section class="ListWrapper">
-			<CarList />
+{#if $page.status === 200}
+	<main>
+		<section class="formWrapper">
+			<h4>Add Car to the list</h4>
+			{#if $errorStore}<span class="errorMessage">{$errorStore}</span>{/if}
+			<Form />
 		</section>
-		<section class="carDetail">
-			<slot />
-		</section>
-	</div>
-</main>
+		<div class="contentWrapper">
+			<section class="ListWrapper">
+				<CarList />
+			</section>
+			<section class="carDetail">
+				<slot />
+			</section>
+		</div>
+	</main>
+{:else}
+	<slot />
+{/if}
 
 <style lang="scss">
 	:global(body) {
@@ -50,7 +55,9 @@
 				flex: 1;
 				text-align: center;
 			}
-
+			.ListWrapper {
+				flex: 2;
+			}
 			:global(.formButton) {
 				cursor: pointer;
 				appearance: none;
