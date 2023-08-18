@@ -16,6 +16,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{car ? `${car.name} ${car.model} ${car.year}` : 'Car list '}</title>
+</svelte:head>
+
 {#if car}
 	<div transition:fade>
 		<h3>Car Detail</h3>
