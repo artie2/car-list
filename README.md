@@ -1,38 +1,47 @@
-# create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+# Car List Project
 
-## Creating a project
+## Installation
 
-If you're seeing this, you've probably already done this step. Congrats!
+Follow these steps to install and run the project:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+1. Clone the repository:
+   ```
+   git clone <https://github.com/artie2/car-list.gitL>
+   ```
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+2. Navigate to the project directory:
+   ```
+   cd car-list-project
+   ```
 
-## Developing
+3. Install dependencies:
+   ```
+   npm install
+   ```
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Running the Project
 
-```bash
-npm run dev
+- To run the project in development mode:
+   ```
+   npm run dev
+   ```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- To build the project for production:
+   ```
+   npm run build
+   ```
 
-## Building
+## Usage
 
-To create a production version of your app:
+After starting the development server with `npm run dev`, open your browser and navigate to:
+   ```
+   http://localhost:3000
+   ```
 
-```bash
-npm run build
-```
+## Technologies
 
-You can preview the production build with `npm run preview`.
+- SvelteKit
+- TypeScript
+- LocalStorage for data persistence
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
