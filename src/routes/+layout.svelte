@@ -1,89 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { carStore } from '$lib/car.store';
-	import { addCar, deleteCar, type Car } from '$lib/localstorage';
+	import { carStore } from '$lib/stores/car.store';
+	import { deleteCar, type Car } from '$lib/localstorage';
 	import { page } from '$app/stores';
-	import { compressImage } from '$lib/utils';
 	import { fade } from 'svelte/transition';
-	import { errorStore } from '$lib/error.store';
-
-	$: selectedCarId = $page.params.carId;
-
-	async function onSubmitCar(
-		event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }
-	) {
-		const form = event.target as HTMLFormElement;
-		const data = new FormData(form);
-		const name = String(data.get('name'));
-		const model = String(data.get('model'));
-		const year = Number(data.get('year'));
-		const carImageFile = data.get('carImage') as File;
-		let carImage = '';
-
-		//if file is attached to, then compress it and convert to string
-		if (carImageFile && carImageFile.name !== '') carImage = await compressImage(carImageFile);
-		const id = addCar(name, model, year, carImage);
-		if (id !== '') {
-			form.reset();
-			goto(`/${id}`);
-		}
-	}
-
-	function onCarClick(car: Car) {
-		goto(`/${car.id}`);
-	}
-
-	function onDeleteCar(id: string) {
-		const deleted = deleteCar(id);
-		//if delete selected car we nee to navigate to home
-		if (deleted && selectedCarId === id) goto(`/`);
-	}
+	import { errorStore } from '$lib/stores/error.store';
+	import Form from '$lib/components/form.svelte';
+	import CarList from '$lib/components/car-list.svelte';
 </script>
 
 <main>
 	<section class="formWrapper">
 		<h4>Add Car to the list</h4>
 		{#if $errorStore}<span class="errorMessage">{$errorStore}</span>{/if}
-		<form on:submit|preventDefault={onSubmitCar}>
-			<div class="inputs">
-				<input placeholder="Name" required name="name" type="text" />
-
-				<input placeholder="Model" required name="model" type="text" />
-
-				<input placeholder="Year" required name="year" type="number" />
-				<label class="labelFileInput">
-					Upload Image
-					<input type="file" accept="image/*" name="carImage" />
-				</label>
-			</div>
-			<button class="formButton" type="submit">Save</button>
-		</form>
+		<Form />
 	</section>
 	<div class="contentWrapper">
 		<section class="ListWrapper">
-			<ul class="carList">
-				{#each $carStore as car}
-					<li transition:fade class:active={selectedCarId === car.id}>
-						<span
-							role="button"
-							tabindex="0"
-							on:keydown={() => {
-								onCarClick(car);
-							}}
-							on:click={() => {
-								onCarClick(car);
-							}}>{car.name} {car.model} {car.year}</span
-						>
-						<button
-							class="deleteButton"
-							on:click={() => {
-								onDeleteCar(car.id);
-							}}>x</button
-						>
-					</li>{/each}
-			</ul>
+			<CarList />
 		</section>
-
 		<section class="carDetail">
 			<slot />
 		</section>
@@ -114,95 +49,11 @@
 				.carDetail {
 					flex: 3;
 				}
-
-				.ListWrapper {
-					flex: 2;
-
-					.carList {
-						padding: 0;
-
-						li {
-							display: flex;
-							cursor: pointer;
-							margin-bottom: 10px;
-							display: flex;
-							justify-content: space-between;
-							border-bottom: 1px solid $input-border;
-
-							&.active,
-							&:hover {
-								transition: all 1s ease;
-								border-bottom: 1px solid $input-border-focus;
-							}
-							.deleteButton {
-								border: none;
-								background: none;
-								outline: none;
-								&:hover,
-								:focus {
-									color: $button-delete-color;
-								}
-							}
-							span {
-								flex: 1;
-								padding: 5px 10px;
-							}
-						}
-					}
-				}
 			}
 			.formWrapper {
 				max-width: 900px;
 				flex: 1;
 				text-align: center;
-
-				form {
-					.inputs {
-						padding: 0 0 1rem 0;
-						display: flex;
-						gap: 0.5rem;
-						flex-wrap: wrap;
-						justify-content: center;
-
-						input {
-							padding: 8px 16px;
-							line-height: 25px;
-							font-size: 1rem;
-							font-weight: 500;
-							font-family: inherit;
-							border-radius: 6px;
-							color: $input-color;
-							border: 1px solid $input-border;
-							background: $input-background;
-							&::placeholder {
-								color: $input-placeholder;
-							}
-							&:focus {
-								outline: none;
-								border-color: $input-border-focus;
-							}
-							&[type='file'] {
-								display: none;
-							}
-						}
-
-						label.labelFileInput {
-							cursor: pointer;
-							justify-items: center;
-							align-content: center;
-							color: $input-color;
-							border: 1px solid $input-border;
-							padding: 0.5em 0.8em;
-							border-radius: 2em;
-							&:hover,
-							&:focus,
-							&:active {
-								border-color: $button-background-focus;
-								color: $button-background-focus;
-							}
-						}
-					}
-				}
 			}
 
 			:global(.formButton) {

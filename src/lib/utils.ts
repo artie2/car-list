@@ -1,6 +1,10 @@
 
 
-    //for this tasl we use only localstorage so we need to comppress image to save it in local storage
+ //Compresses an image file and returns a data URL representing the compressed image.
+
+import { errorStore } from "./stores/error.store";
+
+
     export async function compressImage(file: File) {
         const img = document.createElement('img');
         const canvas = document.createElement('canvas');
@@ -12,7 +16,8 @@
                 if (event.target && typeof event.target.result === 'string') {
                     resolve(event.target.result);
                 } else {
-                    reject(new Error('Failed to load the image file.'));
+                    errorStore.setError('Failed to load the image file.')
+                    reject();
                 }
             };
             reader.readAsDataURL(file);

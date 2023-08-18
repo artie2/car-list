@@ -4,17 +4,11 @@
 	import { getCar, type Car, deleteCar } from '$lib/localstorage';
 	import { fade } from 'svelte/transition';
 
-	const carId = $page.params.carId;
-	let car: Car;
+	let carId = $page.params.carId;
+	let car: Car | undefined;
 	$: {
-		const carId = $page.params.carId;
-		try{
-			car = getCar(carId);
-		}
-		catch(error){
-
-		}
-		
+		carId = $page.params.carId;
+		car = getCar(carId);
 	}
 	function onDeleteCar() {
 		const deleted = deleteCar(carId);
@@ -22,39 +16,41 @@
 	}
 </script>
 
-{#if car.id}
-<div  transition:fade={{duration:1000}}>
-	<h3 >Car Detail</h3>
-	<p>Name : <strong>{car.name}</strong></p>
-	<p>Model : <strong>{car.model}</strong></p>
-	<p>Year : <strong>{car.year}</strong></p>
-	{#if car.image && car.image !== ''}
-		<img alt={car.id} src={car.image} />
-	{/if}
-    <div class="text-align-right"><button class="formButton delete" on:click={onDeleteCar}>Delete</button></div>
-</div>
+{#if car}
+	<div transition:fade>
+		<h3>Car Detail</h3>
+		<p>Name : <strong>{car.name}</strong></p>
+		<p>Model : <strong>{car.model}</strong></p>
+		<p>Year : <strong>{car.year}</strong></p>
+		{#if car.image && car.image !== ''}
+			<img alt={car.id} src={car.image} />
+		{/if}
+		<div class="text-align-right">
+			<button class="formButton delete" on:click={onDeleteCar}>Delete</button>
+		</div>
+	</div>
 {/if}
 
 <style lang="scss">
 	img {
 		border-radius: 4px;
-        width: 100%;
+		width: 100%;
 	}
 
-    .text-align-right{
-        text-align: right;
-    }
+	.text-align-right {
+		text-align: right;
+	}
 
-    .formButton.delete {
-					right: 0;
-					color: $button-delete-color ;
-					border: 1px solid $button-delete-color;
-					background: white;
-					&:focus,
-					&:hover {
-						outline: none;
-						background: $button-delete-color;
-						color: white;
-					}
-				}
+	.formButton.delete {
+		right: 0;
+		color: $button-delete-color;
+		border: 1px solid $button-delete-color;
+		background: white;
+		&:focus,
+		&:hover {
+			outline: none;
+			background: $button-delete-color;
+			color: white;
+		}
+	}
 </style>
